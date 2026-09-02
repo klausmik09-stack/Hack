@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>System Hacked</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020603;color:#39ff70;font-family:"Courier New",monospace}
+body{position:relative}
+#matrix{position:fixed;inset:0;z-index:0;opacity:.5}
+.scanlines{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 2px,transparent 4px)}
+.vignette{position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.72) 100%)}
+.ui{position:relative;z-index:2;width:100%;height:100%;padding:22px;display:grid;grid-template-columns:280px 1fr 280px;grid-template-rows:1fr 150px;gap:18px}
+.panel{border:1px solid rgba(57,255,112,.6);background:rgba(0,15,5,.72);box-shadow:0 0 18px rgba(57,255,112,.08),inset 0 0 25px rgba(57,255,112,.04);padding:14px;overflow:hidden}
+.title{font-size:13px;border-bottom:1px solid rgba(57,255,112,.35);padding-bottom:9px;margin-bottom:12px;letter-spacing:1px}
+.log{font-size:12px;line-height:1.8}
+.ok{color:#75ff9b}
+.dim{opacity:.65}
+.bar{height:9px;border:1px solid #39ff70;margin-top:12px;position:relative}
+.bar span{display:block;height:100%;width:96%;background:#39ff70;box-shadow:0 0 10px #39ff70;animation:pulse 1s infinite alternate}
+.center{display:flex;align-items:center;justify-content:center;position:relative}
+.hackbox{width:min(720px,90%);padding:55px 30px;border:2px solid #39ff70;background:rgba(0,20,7,.76);box-shadow:0 0 25px #1dff55, inset 0 0 35px rgba(57,255,112,.12);text-align:center;position:relative;animation:float 3s ease-in-out infinite}
+.hackbox:before,.hackbox:after{content:"";position:absolute;width:55px;height:16px;border-color:#39ff70;border-style:solid}
+.hackbox:before{top:-2px;left:-2px;border-width:2px 0 0 2px}.hackbox:after{bottom:-2px;right:-2px;border-width:0 2px 2px 0}
+.badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:4px 35px;background:#020603;border:1px solid #39ff70;font-size:14px;letter-spacing:2px}
+.big{font-family:Tahoma,Arial,sans-serif;font-size:clamp(42px,7vw,88px);font-weight:900;text-shadow:0 0 8px #39ff70,0 0 25px #1aff54;margin:8px 0;animation:flicker 2.8s infinite}
+.sub{font-family:Tahoma,Arial,sans-serif;font-size:clamp(30px,4.5vw,62px);font-weight:800;text-shadow:0 0 8px #39ff70}
+.skull{font-size:58px;margin-top:15px;filter:drop-shadow(0 0 8px #39ff70)}
+.device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(57,255,112,.25);padding:8px 0;font-size:11px}
+.connected{font-size:9px;border:1px solid #39ff70;padding:2px 5px}
+.bottom{grid-column:1/4;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.radar{height:90px;display:flex;align-items:center;justify-content:center}
+.radar-ring{width:90px;height:90px;border:1px solid #39ff70;border-radius:50%;box-shadow:0 0 15px rgba(57,255,112,.3);position:relative}
+.radar-ring:before{content:"";position:absolute;left:50%;top:50%;width:45%;height:1px;background:#39ff70;transform-origin:left;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}} @keyframes pulse{to{width:100%;opacity:.65}}
+@keyframes float{50%{transform:translateY(-5px)}} @keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.75}97%{opacity:.92}}
+@media(max-width:850px){.ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}.left,.right,.bottom{display:none}.center{height:100%}.hackbox{width:96%;padding:45px 15px}.big{font-size:48px}.sub{font-size:34px}}
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="ui">
+  <div class="panel left">
+    <div class="title">TERMINAL_01 // ACCESS</div>
+    <div class="log">
+      <div>Initializing exploit...</div><div>Connecting to target...</div>
+      <div>Bypassing firewall...</div><div class="ok">Firewall bypassed ✓</div>
+      <div>Accessing system...</div><div>Locating vulnerabilities...</div>
+      <div class="ok">Payload injected ✓</div><div>Root access granted.</div>
+      <div>System control achieved.</div><div class="ok">WELCOME TO THE MATRIX</div>
+      <div class="bar"><span></span></div>
+    </div>
+  </div>
+
+  <main class="center">
+    <section class="hackbox">
+      <div class="badge">SYSTEM HACKED</div>
+      <div class="big">مبروك</div>
+      <div class="sub">العزيمة عليك</div>
+      <div class="skull">☠</div>
+    </section>
+  </main>
+
+  <div class="panel right">
+    <div class="title">CODE STREAM // LIVE</div>
+    <div class="log">
+      0x7f1a3b2c &nbsp; mov rax,[rbx+10h]<br>
+      0x7f1a3b30 &nbsp; xor rcx,rcx<br>
+      0x7f1a3b34 &nbsp; add rax,1<br>
+      0x7f1a3b38 &nbsp; cmp rax,rbx<br>
+      0x7f1a3b3c &nbsp; jne 0x7f1a3b2c<br>
+      0x7f1a3b40 &nbsp; push rax<br>
+      0x7f1a3b44 &nbsp; call exploit()<br>
+      0x7f1a3b48 &nbsp; pop rax<br>
+      0x7f1a3b4c &nbsp; test rax,rax<br>
+      0x7f1a3b50 &nbsp; ret
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="panel">
+      <div class="title">DEVICE CONNECTIONS</div>
+      <div class="device"><span>📱 Mobile Phone</span><span class="connected">CONNECTED</span></div>
+      <div class="device"><span>💻 Laptop</span><span class="connected">CONNECTED</span></div>
+      <div class="device"><span>🖥 Desktop</span><span class="connected">CONNECTED</span></div>
+    </div>
+    <div class="panel">
+      <div class="title">DATA TRANSFER</div>
+      <div class="log">Downloading surprise... <span class="ok">99%</span></div>
+      <div class="bar"><span></span></div>
+      <div class="log dim">Speed: 8.4 MB/s<br>ETA: 00:00:01</div>
+    </div>
+    <div class="panel radar">
+      <div class="radar-ring"></div>
+    </div>
+  </div>
+</div>
+<div class="scanlines"></div><div class="vignette"></div>
+
+<script>
+const c=document.getElementById('matrix'),x=c.getContext('2d');
+let w,h,cols,drops;
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/16);drops=Array(cols).fill(1)}
+resize(); addEventListener('resize',resize);
+const chars='01アイウエオカキクケコZXCVBNM#$%<>[]{}+/\\\\';
+function draw(){
+  x.fillStyle='rgba(0,0,0,.075)';x.fillRect(0,0,w,h);
+  x.font='14px monospace';
+  for(let i=0;i<drops.length;i++){
+    const ch=chars[Math.floor(Math.random()*chars.length)];
+    x.fillStyle=Math.random()>.88?'#b6ffca':'#16b943';
+    x.fillText(ch,i*16,drops[i]*16);
+    if(drops[i]*16>h && Math.random()>.975)drops[i]=0;
+    drops[i]++;
+  }
+}
+setInterval(draw,45);
+</script>
+</body>
+</html>
