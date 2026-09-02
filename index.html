@@ -1,95 +1,124 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>System Hacked</title>
+<title>System Access</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020603;color:#39ff70;font-family:"Courier New",monospace}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050a06;color:#4aff79;font-family:"Courier New", Courier, monospace}
 body{position:relative}
-#matrix{position:fixed;inset:0;z-index:0;opacity:.5}
-.scanlines{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 2px,transparent 4px)}
-.vignette{position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.72) 100%)}
+#matrix{position:fixed;inset:0;z-index:0;opacity:0.35}
+.scanlines{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.15) 1px,transparent 2px,transparent 4px)}
+.vignette{position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.85) 100%)}
 .ui{position:relative;z-index:2;width:100%;height:100%;padding:22px;display:grid;grid-template-columns:280px 1fr 280px;grid-template-rows:1fr 150px;gap:18px}
-.panel{border:1px solid rgba(57,255,112,.6);background:rgba(0,15,5,.72);box-shadow:0 0 18px rgba(57,255,112,.08),inset 0 0 25px rgba(57,255,112,.04);padding:14px;overflow:hidden}
-.title{font-size:13px;border-bottom:1px solid rgba(57,255,112,.35);padding-bottom:9px;margin-bottom:12px;letter-spacing:1px}
-.log{font-size:12px;line-height:1.8}
-.ok{color:#75ff9b}
-.dim{opacity:.65}
-.bar{height:9px;border:1px solid #39ff70;margin-top:12px;position:relative}
-.bar span{display:block;height:100%;width:96%;background:#39ff70;box-shadow:0 0 10px #39ff70;animation:pulse 1s infinite alternate}
+.panel{border:1px solid rgba(74,255,121,.3);background:rgba(2,10,4,.65);backdrop-filter:blur(4px);box-shadow:0 0 20px rgba(74,255,121,.05),inset 0 0 20px rgba(74,255,121,.02);padding:18px;overflow:hidden;border-radius:4px;}
+.title{font-size:12px;border-bottom:1px solid rgba(74,255,121,.3);padding-bottom:10px;margin-bottom:15px;letter-spacing:2px;font-weight:bold;text-transform:uppercase;color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)}
+.log{font-size:12px;line-height:2}
+.ok{color:#fff;text-shadow:0 0 8px #4aff79}
+.dim{opacity:.5}
+
+/* Center Box Design */
 .center{display:flex;align-items:center;justify-content:center;position:relative}
-.hackbox{width:min(720px,90%);padding:55px 30px;border:2px solid #39ff70;background:rgba(0,20,7,.76);box-shadow:0 0 25px #1dff55, inset 0 0 35px rgba(57,255,112,.12);text-align:center;position:relative;animation:float 3s ease-in-out infinite}
-.hackbox:before,.hackbox:after{content:"";position:absolute;width:55px;height:16px;border-color:#39ff70;border-style:solid}
-.hackbox:before{top:-2px;left:-2px;border-width:2px 0 0 2px}.hackbox:after{bottom:-2px;right:-2px;border-width:0 2px 2px 0}
-.badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:4px 35px;background:#020603;border:1px solid #39ff70;font-size:14px;letter-spacing:2px}
-.big{font-family:Tahoma,Arial,sans-serif;font-size:clamp(42px,7vw,88px);font-weight:900;text-shadow:0 0 8px #39ff70,0 0 25px #1aff54;margin:8px 0;animation:flicker 2.8s infinite}
-.sub{font-family:Tahoma,Arial,sans-serif;font-size:clamp(30px,4.5vw,62px);font-weight:800;text-shadow:0 0 8px #39ff70}
-.skull{font-size:58px;margin-top:15px;filter:drop-shadow(0 0 8px #39ff70)}
-.device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(57,255,112,.25);padding:8px 0;font-size:11px}
-.connected{font-size:9px;border:1px solid #39ff70;padding:2px 5px}
+.hackbox{width:min(750px,95%);min-height:250px;padding:50px 40px;border:1px solid rgba(74,255,121,0.5);background:rgba(0,15,5,.8);box-shadow:0 0 30px rgba(74,255,121,.15), inset 0 0 40px rgba(0,0,0,0.8);text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.hackbox:before,.hackbox:after{content:"";position:absolute;width:40px;height:40px;border-color:#4aff79;border-style:solid}
+.hackbox:before{top:-1px;left:-1px;border-width:2px 0 0 2px}.hackbox:after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 20px;background:#050a06;border:1px solid #4aff79;font-size:12px;letter-spacing:3px;color:#fff}
+
+/* Sequence Stages */
+.stage { display: none; width: 100%; flex-direction: column; align-items: center; justify-content: center; }
+.stage.active { display: flex; }
+
+/* 1. Loader */
+.loader-text { font-size: 14px; letter-spacing: 4px; margin-bottom: 20px; text-transform: uppercase; animation: pulse-text 1.5s infinite; }
+.progress-container { width: 80%; height: 2px; background: rgba(74,255,121,0.2); position: relative; margin-bottom: 20px; }
+.progress-bar { height: 100%; width: 0%; background: #4aff79; box-shadow: 0 0 15px #4aff79, 0 0 5px #fff; transition: width 0.05s linear; }
+.percentage { font-size: 36px; font-weight: bold; font-family: Tahoma, sans-serif; text-shadow: 0 0 10px #4aff79; }
+
+/* 2. Checkmark */
+.checkmark { font-size: 70px; color: #fff; text-shadow: 0 0 20px #4aff79, 0 0 40px #4aff79; animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.auth-text { margin-top: 15px; font-size: 16px; letter-spacing: 5px; color: #fff; }
+
+/* 3. Final Message */
+.final-message { font-size: clamp(18px, 4vw, 26px); line-height: 1.6; text-shadow: 0 0 8px #4aff79; letter-spacing: 1px; font-weight: bold; }
+.final-message .highlight { color: #fff; text-shadow: 0 0 15px #4aff79, 0 0 30px #4aff79; font-size: 1.1em; }
+.cursor { display: inline-block; width: 12px; height: 24px; background: #4aff79; margin-left: 5px; vertical-align: middle; animation: blink 1s step-end infinite; }
+
+/* Side Elements */
+.device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(74,255,121,.2);padding:10px 0;font-size:12px}
+.connected{font-size:10px;border:1px solid #4aff79;padding:3px 6px;color:#fff;background:rgba(74,255,121,0.1)}
 .bottom{grid-column:1/4;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
 .radar{height:90px;display:flex;align-items:center;justify-content:center}
-.radar-ring{width:90px;height:90px;border:1px solid #39ff70;border-radius:50%;box-shadow:0 0 15px rgba(57,255,112,.3);position:relative}
-.radar-ring:before{content:"";position:absolute;left:50%;top:50%;width:45%;height:1px;background:#39ff70;transform-origin:left;animation:spin 2s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}} @keyframes pulse{to{width:100%;opacity:.65}}
-@keyframes float{50%{transform:translateY(-5px)}} @keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.75}97%{opacity:.92}}
-@media(max-width:850px){.ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}.left,.right,.bottom{display:none}.center{height:100%}.hackbox{width:96%;padding:45px 15px}.big{font-size:48px}.sub{font-size:34px}}
+.radar-ring{width:90px;height:90px;border:1px solid rgba(74,255,121,0.5);border-radius:50%;box-shadow:inset 0 0 20px rgba(74,255,121,.1);position:relative}
+.radar-ring:before{content:"";position:absolute;left:50%;top:50%;width:45%;height:1px;background:linear-gradient(90deg, #4aff79, transparent);transform-origin:left;animation:spin 2s linear infinite}
+
+@keyframes spin{to{transform:rotate(360deg)}} 
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes pulse-text{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes pop-in{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+
+@media(max-width:850px){.ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}.left,.right,.bottom{display:none}.center{height:100%}.hackbox{width:96%;padding:40px 20px}}
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
 <div class="ui">
   <div class="panel left">
-    <div class="title">TERMINAL_01 // ACCESS</div>
-    <div class="log">
-      <div>Initializing exploit...</div><div>Connecting to target...</div>
-      <div>Bypassing firewall...</div><div class="ok">Firewall bypassed ✓</div>
-      <div>Accessing system...</div><div>Locating vulnerabilities...</div>
-      <div class="ok">Payload injected ✓</div><div>Root access granted.</div>
-      <div>System control achieved.</div><div class="ok">WELCOME TO THE MATRIX</div>
-      <div class="bar"><span></span></div>
+    <div class="title">SYS_LOG // LOCALHOST</div>
+    <div class="log" id="sys-log">
+      <div>> Handshake initiated...</div>
+      <div>> Bypassing security...</div>
     </div>
   </div>
 
   <main class="center">
     <section class="hackbox">
-      <div class="badge">SYSTEM HACKED</div>
-      <div class="big">مبروك</div>
-      <div class="sub">العزيمة عليك</div>
-      <div class="skull">☠</div>
+      <div class="badge">SECURE CONNECTION</div>
+      
+      <div id="stage-loader" class="stage active">
+        <div class="loader-text">Establishing Connection</div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="percentage" id="percentage">0%</div>
+      </div>
+
+      <div id="stage-check" class="stage">
+        <div class="checkmark">✓</div>
+        <div class="auth-text">ACCESS GRANTED</div>
+      </div>
+
+      <div id="stage-message" class="stage">
+        <div class="final-message" id="typewriter-text"><span class="cursor"></span></div>
+      </div>
+
     </section>
   </main>
 
   <div class="panel right">
-    <div class="title">CODE STREAM // LIVE</div>
+    <div class="title">DATA STREAM</div>
     <div class="log">
-      0x7f1a3b2c &nbsp; mov rax,[rbx+10h]<br>
-      0x7f1a3b30 &nbsp; xor rcx,rcx<br>
-      0x7f1a3b34 &nbsp; add rax,1<br>
-      0x7f1a3b38 &nbsp; cmp rax,rbx<br>
-      0x7f1a3b3c &nbsp; jne 0x7f1a3b2c<br>
-      0x7f1a3b40 &nbsp; push rax<br>
-      0x7f1a3b44 &nbsp; call exploit()<br>
-      0x7f1a3b48 &nbsp; pop rax<br>
-      0x7f1a3b4c &nbsp; test rax,rax<br>
-      0x7f1a3b50 &nbsp; ret
+      0x7f1a3b2c : mov rax,[rbx+10h]<br>
+      0x7f1a3b30 : xor rcx,rcx<br>
+      0x7f1a3b34 : add rax,1<br>
+      0x7f1a3b38 : cmp rax,rbx<br>
+      0x7f1a3b3c : jne 0x7f1a3b2c<br>
+      0x7f1a3b40 : push rax<br>
+      0x7f1a3b44 : call link_device()<br>
+      <span class="ok">0x7f1a3b48 : STATUS_OK</span>
     </div>
   </div>
 
   <div class="bottom">
     <div class="panel">
-      <div class="title">DEVICE CONNECTIONS</div>
-      <div class="device"><span>📱 Mobile Phone</span><span class="connected">CONNECTED</span></div>
-      <div class="device"><span>💻 Laptop</span><span class="connected">CONNECTED</span></div>
-      <div class="device"><span>🖥 Desktop</span><span class="connected">CONNECTED</span></div>
+      <div class="title">NETWORK DEVICES</div>
+      <div class="device"><span>📱 Mobile Node</span><span class="connected">LINKED</span></div>
+      <div class="device"><span>💻 macbook_qassem</span><span class="connected">HOST</span></div>
     </div>
     <div class="panel">
-      <div class="title">DATA TRANSFER</div>
-      <div class="log">Downloading surprise... <span class="ok">99%</span></div>
-      <div class="bar"><span></span></div>
-      <div class="log dim">Speed: 8.4 MB/s<br>ETA: 00:00:01</div>
+      <div class="title">ENCRYPTION STATUS</div>
+      <div class="log">AES-256-GCM <span class="ok">ACTIVE</span></div>
+      <div class="log dim">Latency: 12ms<br>Packet loss: 0.00%</div>
     </div>
     <div class="panel radar">
       <div class="radar-ring"></div>
@@ -99,23 +128,106 @@ body{position:relative}
 <div class="scanlines"></div><div class="vignette"></div>
 
 <script>
+// Matrix Background Logic
 const c=document.getElementById('matrix'),x=c.getContext('2d');
 let w,h,cols,drops;
-function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/16);drops=Array(cols).fill(1)}
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/20);drops=Array(cols).fill(1)}
 resize(); addEventListener('resize',resize);
 const chars='01アイウエオカキクケコZXCVBNM#$%<>[]{}+/\\\\';
 function draw(){
-  x.fillStyle='rgba(0,0,0,.075)';x.fillRect(0,0,w,h);
-  x.font='14px monospace';
+  x.fillStyle='rgba(5, 10, 6, 0.1)';x.fillRect(0,0,w,h);
+  x.font='15px monospace';
   for(let i=0;i<drops.length;i++){
     const ch=chars[Math.floor(Math.random()*chars.length)];
-    x.fillStyle=Math.random()>.88?'#b6ffca':'#16b943';
-    x.fillText(ch,i*16,drops[i]*16);
-    if(drops[i]*16>h && Math.random()>.975)drops[i]=0;
+    x.fillStyle=Math.random()>.90?'#ffffff':'#158532';
+    x.fillText(ch,i*20,drops[i]*20);
+    if(drops[i]*20>h && Math.random()>.975)drops[i]=0;
     drops[i]++;
   }
 }
-setInterval(draw,45);
+setInterval(draw,50);
+
+// Sequence Logic
+document.addEventListener("DOMContentLoaded", () => {
+    let progress = 0;
+    const progressBar = document.getElementById('progress-bar');
+    const percentageText = document.getElementById('percentage');
+    
+    const stageLoader = document.getElementById('stage-loader');
+    const stageCheck = document.getElementById('stage-check');
+    const stageMessage = document.getElementById('stage-message');
+    const typewriterText = document.getElementById('typewriter-text');
+    const sysLog = document.getElementById('sys-log');
+
+    // 1. Fast Loading (0 to 100)
+    let loadInterval = setInterval(() => {
+        // Random fast increments
+        progress += Math.floor(Math.random() * 8) + 2; 
+        
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadInterval);
+            
+            progressBar.style.width = '100%';
+            percentageText.innerText = '100%';
+            
+            // Move to Checkmark after a tiny delay
+            setTimeout(showCheckmark, 400);
+        } else {
+            progressBar.style.width = progress + '%';
+            percentageText.innerText = progress + '%';
+        }
+    }, 40); // speed of updates
+
+    // 2. Show Checkmark
+    function showCheckmark() {
+        stageLoader.classList.remove('active');
+        stageCheck.classList.add('active');
+        sysLog.innerHTML += '<div>> <span class="ok">Authentication Success ✓</span></div>';
+        
+        // Show checkmark for 2 seconds, then type message
+        setTimeout(showFinalMessage, 2000);
+    }
+
+    // 3. Typewriter Effect for Final Message
+    function showFinalMessage() {
+        stageCheck.classList.remove('active');
+        stageMessage.classList.add('active');
+        sysLog.innerHTML += '<div>> Linking devices...</div>';
+
+        const textPart1 = "your mobile is now connected to ";
+        const textPart2 = "macbook_qassem";
+        let i = 0;
+        let isTypingPart2 = false;
+        
+        typewriterText.innerHTML = '<span class="cursor"></span>'; // reset with cursor
+
+        let typeInterval = setInterval(() => {
+            // Remove cursor temporarily to insert text before it
+            typewriterText.innerHTML = typewriterText.innerHTML.replace('<span class="cursor"></span>', '');
+
+            if (!isTypingPart2) {
+                typewriterText.innerHTML += textPart1.charAt(i);
+                i++;
+                if (i >= textPart1.length) {
+                    isTypingPart2 = true;
+                    i = 0;
+                    typewriterText.innerHTML += '<br><span class="highlight"></span>';
+                }
+            } else {
+                const highlightSpan = typewriterText.querySelector('.highlight');
+                highlightSpan.innerHTML += textPart2.charAt(i);
+                i++;
+                if (i >= textPart2.length) {
+                    clearInterval(typeInterval);
+                    sysLog.innerHTML += '<div>> <span class="ok">Connection Established.</span></div>';
+                }
+            }
+            // Add cursor back at the end
+            typewriterText.innerHTML += '<span class="cursor"></span>';
+        }, 60); // typing speed
+    }
+});
 </script>
 </body>
 </html>
