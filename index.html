@@ -18,8 +18,8 @@ body{position:relative}
 .ok{color:#fff;text-shadow:0 0 8px #4aff79}
 .dim{opacity:.5}
 
-/* Center Box Design */
-.center{display:flex;align-items:center;justify-content:center;position:relative}
+/* Center Layout */
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;gap:40px;}
 .hackbox{width:min(750px,95%);min-height:250px;padding:50px 40px;border:1px solid rgba(74,255,121,0.5);background:rgba(0,15,5,.8);box-shadow:0 0 30px rgba(74,255,121,.15), inset 0 0 40px rgba(0,0,0,0.8);text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;}
 .hackbox:before,.hackbox:after{content:"";position:absolute;width:40px;height:40px;border-color:#4aff79;border-style:solid}
 .hackbox:before{top:-1px;left:-1px;border-width:2px 0 0 2px}.hackbox:after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
@@ -44,6 +44,49 @@ body{position:relative}
 .final-message .highlight { color: #fff; text-shadow: 0 0 15px #4aff79, 0 0 30px #4aff79; font-size: 1.1em; }
 .cursor { display: inline-block; width: 12px; height: 24px; background: #4aff79; margin-left: 5px; vertical-align: middle; animation: blink 1s step-end infinite; }
 
+/* -------------------------------------
+   HARDWARE CONNECTION ANIMATION
+   ------------------------------------- */
+.hardware-link { display: flex; align-items: flex-end; justify-content: center; gap: 15px; position: relative; width: 100%; }
+.device-label { position: absolute; bottom: -25px; font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px; white-space: nowrap; }
+
+/* Mobile Node */
+.icon-mobile {
+    width: 32px; height: 58px;
+    border: 2px solid #4aff79;
+    border-radius: 6px;
+    position: relative;
+    background: rgba(0, 20, 5, 0.6);
+    box-shadow: 0 0 15px rgba(74,255,121,0.2), inset 0 0 10px rgba(74,255,121,0.1);
+    display: flex; justify-content: center;
+}
+.icon-mobile::before { content:''; position:absolute; top:4px; width:10px; height:2px; background:#4aff79; border-radius:2px; }
+.icon-mobile::after { content:''; position:absolute; bottom:4px; width:6px; height:6px; border:1px solid #4aff79; border-radius:50%; }
+
+/* Mac Node */
+.icon-mac { display: flex; flex-direction: column; align-items: center; position: relative; }
+.mac-screen {
+    width: 80px; height: 50px;
+    border: 2px solid #4aff79;
+    border-radius: 6px 6px 0 0;
+    background: rgba(0, 20, 5, 0.6);
+    box-shadow: 0 0 15px rgba(74,255,121,0.2), inset 0 0 10px rgba(74,255,121,0.1);
+    display: flex; align-items: center; justify-content: center;
+}
+.mac-logo { width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 20px #4aff79; animation: pulse-text 2s infinite; }
+.mac-base { width: 100px; height: 6px; background: #4aff79; border-radius: 0 0 8px 8px; box-shadow: 0 5px 15px rgba(74,255,121,0.4); }
+
+/* Data Stream (Line between them) */
+.stream-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; }
+.stream-status { font-size: 10px; color: #4aff79; letter-spacing: 2px; animation: blink 1s infinite; }
+.stream-line { width: 140px; height: 2px; background: rgba(74,255,121,0.2); position: relative; overflow: hidden; }
+.stream-particles {
+    position: absolute; top:0; left:0; width:100%; height:100%;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 5px, #4aff79 5px, #4aff79 15px);
+    background-size: 20px 100%;
+    animation: flow 0.3s linear infinite;
+}
+
 /* Side Elements */
 .device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(74,255,121,.2);padding:10px 0;font-size:12px}
 .connected{font-size:10px;border:1px solid #4aff79;padding:3px 6px;color:#fff;background:rgba(74,255,121,0.1)}
@@ -52,12 +95,19 @@ body{position:relative}
 .radar-ring{width:90px;height:90px;border:1px solid rgba(74,255,121,0.5);border-radius:50%;box-shadow:inset 0 0 20px rgba(74,255,121,.1);position:relative}
 .radar-ring:before{content:"";position:absolute;left:50%;top:50%;width:45%;height:1px;background:linear-gradient(90deg, #4aff79, transparent);transform-origin:left;animation:spin 2s linear infinite}
 
+@keyframes flow { to { transform: translateX(20px); } }
 @keyframes spin{to{transform:rotate(360deg)}} 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes pulse-text{0%,100%{opacity:1}50%{opacity:0.5}}
 @keyframes pop-in{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 
-@media(max-width:850px){.ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}.left,.right,.bottom{display:none}.center{height:100%}.hackbox{width:96%;padding:40px 20px}}
+@media(max-width:850px){
+    .ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}
+    .left,.right,.bottom{display:none}
+    .center{height:100%; gap: 20px;}
+    .hackbox{width:96%;padding:40px 20px; min-height: 200px;}
+    .stream-line { width: 80px; }
+}
 </style>
 </head>
 <body>
@@ -72,9 +122,11 @@ body{position:relative}
   </div>
 
   <main class="center">
+    <!-- Main Terminal Box -->
     <section class="hackbox">
       <div class="badge">SECURE CONNECTION</div>
       
+      <!-- Stage 1: Loading -->
       <div id="stage-loader" class="stage active">
         <div class="loader-text">Establishing Connection</div>
         <div class="progress-container">
@@ -83,16 +135,37 @@ body{position:relative}
         <div class="percentage" id="percentage">0%</div>
       </div>
 
+      <!-- Stage 2: Checkmark -->
       <div id="stage-check" class="stage">
         <div class="checkmark">✓</div>
         <div class="auth-text">ACCESS GRANTED</div>
       </div>
 
+      <!-- Stage 3: Final Text -->
       <div id="stage-message" class="stage">
         <div class="final-message" id="typewriter-text"><span class="cursor"></span></div>
       </div>
-
     </section>
+
+    <!-- Hardware Connection Animation (Bottom Center) -->
+    <div class="hardware-link">
+      <div class="icon-mobile">
+        <div class="device-label">MOBILE_NODE</div>
+      </div>
+      
+      <div class="stream-wrapper">
+        <div class="stream-status" id="stream-status">INJECTING_PAYLOAD...</div>
+        <div class="stream-line">
+          <div class="stream-particles" id="stream-particles"></div>
+        </div>
+      </div>
+
+      <div class="icon-mac">
+        <div class="mac-screen"><div class="mac-logo"></div></div>
+        <div class="mac-base"></div>
+        <div class="device-label">MACBOOK_QASSEM</div>
+      </div>
+    </div>
   </main>
 
   <div class="panel right">
@@ -158,10 +231,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const stageMessage = document.getElementById('stage-message');
     const typewriterText = document.getElementById('typewriter-text');
     const sysLog = document.getElementById('sys-log');
+    
+    const streamStatus = document.getElementById('stream-status');
+    const streamParticles = document.getElementById('stream-particles');
 
     // 1. Fast Loading (0 to 100)
     let loadInterval = setInterval(() => {
-        // Random fast increments
         progress += Math.floor(Math.random() * 8) + 2; 
         
         if (progress >= 100) {
@@ -171,25 +246,31 @@ document.addEventListener("DOMContentLoaded", () => {
             progressBar.style.width = '100%';
             percentageText.innerText = '100%';
             
-            // Move to Checkmark after a tiny delay
+            // Move to Checkmark
             setTimeout(showCheckmark, 400);
         } else {
             progressBar.style.width = progress + '%';
             percentageText.innerText = progress + '%';
         }
-    }, 40); // speed of updates
+    }, 40);
 
-    // 2. Show Checkmark
+    // 2. Show Checkmark & Secure hardware stream
     function showCheckmark() {
         stageLoader.classList.remove('active');
         stageCheck.classList.add('active');
         sysLog.innerHTML += '<div>> <span class="ok">Authentication Success ✓</span></div>';
         
-        // Show checkmark for 2 seconds, then type message
+        // Update the Hardware Animation status
+        streamStatus.innerText = 'LINK_SECURED';
+        streamStatus.style.color = '#fff';
+        streamStatus.style.animation = 'none';
+        streamStatus.style.textShadow = '0 0 10px #4aff79';
+        streamParticles.style.animationDuration = '0.1s'; // Speed up data flow when connected
+        
         setTimeout(showFinalMessage, 2000);
     }
 
-    // 3. Typewriter Effect for Final Message
+    // 3. Typewriter Effect
     function showFinalMessage() {
         stageCheck.classList.remove('active');
         stageMessage.classList.add('active');
@@ -200,10 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let i = 0;
         let isTypingPart2 = false;
         
-        typewriterText.innerHTML = '<span class="cursor"></span>'; // reset with cursor
+        typewriterText.innerHTML = '<span class="cursor"></span>';
 
         let typeInterval = setInterval(() => {
-            // Remove cursor temporarily to insert text before it
             typewriterText.innerHTML = typewriterText.innerHTML.replace('<span class="cursor"></span>', '');
 
             if (!isTypingPart2) {
@@ -223,9 +303,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     sysLog.innerHTML += '<div>> <span class="ok">Connection Established.</span></div>';
                 }
             }
-            // Add cursor back at the end
             typewriterText.innerHTML += '<span class="cursor"></span>';
-        }, 60); // typing speed
+        }, 60);
     }
 });
 </script>
