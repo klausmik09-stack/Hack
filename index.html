@@ -1,312 +1,185 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>System Access</title>
+<title>System Hacked</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050a06;color:#4aff79;font-family:"Courier New", Courier, monospace}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020603;color:#39ff70;font-family:"Courier New",monospace}
 body{position:relative}
-#matrix{position:fixed;inset:0;z-index:0;opacity:0.35}
-.scanlines{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.15) 1px,transparent 2px,transparent 4px)}
-.vignette{position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.85) 100%)}
-.ui{position:relative;z-index:2;width:100%;height:100%;padding:22px;display:grid;grid-template-columns:280px 1fr 280px;grid-template-rows:1fr 150px;gap:18px}
-.panel{border:1px solid rgba(74,255,121,.3);background:rgba(2,10,4,.65);backdrop-filter:blur(4px);box-shadow:0 0 20px rgba(74,255,121,.05),inset 0 0 20px rgba(74,255,121,.02);padding:18px;overflow:hidden;border-radius:4px;}
-.title{font-size:12px;border-bottom:1px solid rgba(74,255,121,.3);padding-bottom:10px;margin-bottom:15px;letter-spacing:2px;font-weight:bold;text-transform:uppercase;color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)}
-.log{font-size:12px;line-height:2}
-.ok{color:#fff;text-shadow:0 0 8px #4aff79}
-.dim{opacity:.5}
+#matrix{position:fixed;inset:0;z-index:0;opacity:.4}
+.scanlines{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 2px,transparent 4px)}
+.vignette{position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.75) 100%)}
+.ui{position:relative;z-index:2;width:100%;height:100%;padding:22px;display:grid;grid-template-columns:300px 1fr 300px;grid-template-rows:1fr 160px;gap:18px}
+.panel{border:1px solid rgba(57,255,112,.6);background:rgba(0,15,5,.75);box-shadow:0 0 18px rgba(57,255,112,.08),inset 0 0 25px rgba(57,255,112,.04);padding:14px;overflow:hidden;display:flex;flex-direction:column}
+.title{font-size:13px;border-bottom:1px solid rgba(57,255,112,.35);padding-bottom:9px;margin-bottom:12px;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center}
+.log{font-size:12px;line-height:1.8;overflow-y:auto;flex-grow:1}
+.ok{color:#75ff9b}
+.err{color:#ff3939}
+.dim{opacity:.65}
+.bar{height:9px;border:1px solid #39ff70;margin-top:12px;position:relative}
+.bar span{display:block;height:100%;width:0%;background:#39ff70;box-shadow:0 0 10px #39ff70;animation:loadBar 3s ease-in-out forwards}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
 
-/* Center Layout */
-.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;gap:40px;}
-.hackbox{width:min(750px,95%);min-height:250px;padding:50px 40px;border:1px solid rgba(74,255,121,0.5);background:rgba(0,15,5,.8);box-shadow:0 0 30px rgba(74,255,121,.15), inset 0 0 40px rgba(0,0,0,0.8);text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;}
-.hackbox:before,.hackbox:after{content:"";position:absolute;width:40px;height:40px;border-color:#4aff79;border-style:solid}
-.hackbox:before{top:-1px;left:-1px;border-width:2px 0 0 2px}.hackbox:after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
-.badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 20px;background:#050a06;border:1px solid #4aff79;font-size:12px;letter-spacing:3px;color:#fff}
+/* Globe CSS */
+.globe-container {position:relative;width:150px;height:150px;margin-bottom:30px;animation:float 4s ease-in-out infinite}
+.globe {width:100%;height:100%;border-radius:50%;border:2px solid rgba(57,255,112,.4);box-shadow:0 0 30px rgba(57,255,112,.2), inset 0 0 40px rgba(57,255,112,.2);position:relative;overflow:hidden}
+.globe::before {content:"";position:absolute;top:0;left:0;width:200%;height:100%;background:repeating-linear-gradient(90deg, transparent 0%, transparent 4%, rgba(57,255,112,.2) 4.5%, transparent 5%);animation:spinGlobe 8s linear infinite}
+.globe::after {content:"";position:absolute;top:0;left:0;width:100%;height:200%;background:repeating-linear-gradient(0deg, transparent 0%, transparent 4%, rgba(57,255,112,.2) 4.5%, transparent 5%);animation:spinGlobeY 10s linear infinite}
 
-/* Sequence Stages */
-.stage { display: none; width: 100%; flex-direction: column; align-items: center; justify-content: center; }
-.stage.active { display: flex; }
+.hackbox{width:min(720px,90%);padding:45px 30px;border:2px solid #39ff70;background:rgba(0,20,7,.76);box-shadow:0 0 25px #1dff55, inset 0 0 35px rgba(57,255,112,.12);text-align:center;position:relative}
+.hackbox:before,.hackbox:after{content:"";position:absolute;width:55px;height:16px;border-color:#39ff70;border-style:solid}
+.hackbox:before{top:-2px;left:-2px;border-width:2px 0 0 2px}.hackbox:after{bottom:-2px;right:-2px;border-width:0 2px 2px 0}
+.badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:4px 35px;background:#020603;border:1px solid #39ff70;font-size:14px;letter-spacing:2px;color:#ff3939;animation:flicker 1s infinite}
+.big{font-family:Tahoma,Arial,sans-serif;font-size:clamp(42px,7vw,88px);font-weight:900;text-shadow:0 0 8px #39ff70,0 0 25px #1aff54;margin:8px 0;animation:flicker 2.8s infinite}
+.sub{font-family:Tahoma,Arial,sans-serif;font-size:clamp(30px,4.5vw,50px);font-weight:800;text-shadow:0 0 8px #39ff70}
 
-/* 1. Loader */
-.loader-text { font-size: 14px; letter-spacing: 4px; margin-bottom: 20px; text-transform: uppercase; animation: pulse-text 1.5s infinite; }
-.progress-container { width: 80%; height: 2px; background: rgba(74,255,121,0.2); position: relative; margin-bottom: 20px; }
-.progress-bar { height: 100%; width: 0%; background: #4aff79; box-shadow: 0 0 15px #4aff79, 0 0 5px #fff; transition: width 0.05s linear; }
-.percentage { font-size: 36px; font-weight: bold; font-family: Tahoma, sans-serif; text-shadow: 0 0 10px #4aff79; }
+.device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(57,255,112,.25);padding:8px 0;font-size:11px}
+.connected{font-size:9px;border:1px solid #39ff70;padding:2px 5px;background:rgba(57,255,112,.1)}
+.bottom{grid-column:1/4;display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px}
 
-/* 2. Checkmark */
-.checkmark { font-size: 70px; color: #fff; text-shadow: 0 0 20px #4aff79, 0 0 40px #4aff79; animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-.auth-text { margin-top: 15px; font-size: 16px; letter-spacing: 5px; color: #fff; }
+.camera-feed {height:90px;border:1px solid rgba(57,255,112,.4);background:repeating-linear-gradient(0deg, rgba(0,0,0,.8) 0, rgba(0,0,0,.8) 2px, rgba(57,255,112,.05) 3px);position:relative;display:flex;align-items:center;justify-content:center;color:rgba(57,255,112,.5);font-size:10px}
+.rec {position:absolute;top:5px;right:5px;color:#ff3939;font-weight:bold;font-size:12px;display:flex;align-items:center;gap:4px}
+.rec-dot {width:8px;height:8px;background:#ff3939;border-radius:50%;animation:blink 1s infinite}
 
-/* 3. Final Message */
-.final-message { font-size: clamp(18px, 4vw, 26px); line-height: 1.6; text-shadow: 0 0 8px #4aff79; letter-spacing: 1px; font-weight: bold; }
-.final-message .highlight { color: #fff; text-shadow: 0 0 15px #4aff79, 0 0 30px #4aff79; font-size: 1.1em; }
-.cursor { display: inline-block; width: 12px; height: 24px; background: #4aff79; margin-left: 5px; vertical-align: middle; animation: blink 1s step-end infinite; }
-
-/* -------------------------------------
-   HARDWARE CONNECTION ANIMATION
-   ------------------------------------- */
-.hardware-link { display: flex; align-items: flex-end; justify-content: center; gap: 15px; position: relative; width: 100%; }
-.device-label { position: absolute; bottom: -25px; font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 1px; white-space: nowrap; }
-
-/* Mobile Node */
-.icon-mobile {
-    width: 32px; height: 58px;
-    border: 2px solid #4aff79;
-    border-radius: 6px;
-    position: relative;
-    background: rgba(0, 20, 5, 0.6);
-    box-shadow: 0 0 15px rgba(74,255,121,0.2), inset 0 0 10px rgba(74,255,121,0.1);
-    display: flex; justify-content: center;
-}
-.icon-mobile::before { content:''; position:absolute; top:4px; width:10px; height:2px; background:#4aff79; border-radius:2px; }
-.icon-mobile::after { content:''; position:absolute; bottom:4px; width:6px; height:6px; border:1px solid #4aff79; border-radius:50%; }
-
-/* Mac Node */
-.icon-mac { display: flex; flex-direction: column; align-items: center; position: relative; }
-.mac-screen {
-    width: 80px; height: 50px;
-    border: 2px solid #4aff79;
-    border-radius: 6px 6px 0 0;
-    background: rgba(0, 20, 5, 0.6);
-    box-shadow: 0 0 15px rgba(74,255,121,0.2), inset 0 0 10px rgba(74,255,121,0.1);
-    display: flex; align-items: center; justify-content: center;
-}
-.mac-logo { width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 20px #4aff79; animation: pulse-text 2s infinite; }
-.mac-base { width: 100px; height: 6px; background: #4aff79; border-radius: 0 0 8px 8px; box-shadow: 0 5px 15px rgba(74,255,121,0.4); }
-
-/* Data Stream (Line between them) */
-.stream-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; }
-.stream-status { font-size: 10px; color: #4aff79; letter-spacing: 2px; animation: blink 1s infinite; }
-.stream-line { width: 140px; height: 2px; background: rgba(74,255,121,0.2); position: relative; overflow: hidden; }
-.stream-particles {
-    position: absolute; top:0; left:0; width:100%; height:100%;
-    background: repeating-linear-gradient(90deg, transparent 0, transparent 5px, #4aff79 5px, #4aff79 15px);
-    background-size: 20px 100%;
-    animation: flow 0.3s linear infinite;
-}
-
-/* Side Elements */
-.device{display:flex;justify-content:space-between;border-bottom:1px dashed rgba(74,255,121,.2);padding:10px 0;font-size:12px}
-.connected{font-size:10px;border:1px solid #4aff79;padding:3px 6px;color:#fff;background:rgba(74,255,121,0.1)}
-.bottom{grid-column:1/4;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
-.radar{height:90px;display:flex;align-items:center;justify-content:center}
-.radar-ring{width:90px;height:90px;border:1px solid rgba(74,255,121,0.5);border-radius:50%;box-shadow:inset 0 0 20px rgba(74,255,121,.1);position:relative}
-.radar-ring:before{content:"";position:absolute;left:50%;top:50%;width:45%;height:1px;background:linear-gradient(90deg, #4aff79, transparent);transform-origin:left;animation:spin 2s linear infinite}
-
-@keyframes flow { to { transform: translateX(20px); } }
-@keyframes spin{to{transform:rotate(360deg)}} 
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes pulse-text{0%,100%{opacity:1}50%{opacity:0.5}}
-@keyframes pop-in{0%{transform:scale(0.5);opacity:0}70%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
-
-@media(max-width:850px){
-    .ui{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;padding:12px}
-    .left,.right,.bottom{display:none}
-    .center{height:100%; gap: 20px;}
-    .hackbox{width:96%;padding:40px 20px; min-height: 200px;}
-    .stream-line { width: 80px; }
-}
+@keyframes spinGlobe{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes spinGlobeY{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+@keyframes pulse{to{width:100%;opacity:.65}}
+@keyframes loadBar{to{width:100%}}
+@keyframes float{50%{transform:translateY(-10px)}} 
+@keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.75}97%{opacity:.92}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@media(max-width:850px){.ui{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;overflow:auto;padding:12px}.left,.right,.bottom{display:none}.center{height:100%}.hackbox{width:96%;padding:45px 15px}}
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
 <div class="ui">
   <div class="panel left">
-    <div class="title">SYS_LOG // LOCALHOST</div>
-    <div class="log" id="sys-log">
-      <div>> Handshake initiated...</div>
-      <div>> Bypassing security...</div>
+    <div class="title"><span>TARGET_INFO //</span><span class="ok">LINKED</span></div>
+    <div class="log">
+      <div style="color:#fff;margin-bottom:10px">
+        IP: <span id="fakeIP">192.168.1.1</span><br>
+        LOC: ASYUT, EGYPT<br>
+        ISP: Telecom Egypt<br>
+        DEVICE: UNKNOWN_MOBILE
+      </div>
+      <hr style="border:0;border-top:1px dashed rgba(57,255,112,.3);margin:10px 0">
+      <div>Bypassing firewall... <span class="ok">✓</span></div>
+      <div>Injecting payload... <span class="ok">✓</span></div>
+      <div>Root access... <span class="ok">GRANTED</span></div>
+      <div>Audio stream... <span class="err">MUTED</span></div>
     </div>
   </div>
 
   <main class="center">
-    <!-- Main Terminal Box -->
+    <div class="globe-container"><div class="globe"></div></div>
     <section class="hackbox">
-      <div class="badge">SECURE CONNECTION</div>
-      
-      <!-- Stage 1: Loading -->
-      <div id="stage-loader" class="stage active">
-        <div class="loader-text">Establishing Connection</div>
-        <div class="progress-container">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <div class="percentage" id="percentage">0%</div>
-      </div>
-
-      <!-- Stage 2: Checkmark -->
-      <div id="stage-check" class="stage">
-        <div class="checkmark">✓</div>
-        <div class="auth-text">ACCESS GRANTED</div>
-      </div>
-
-      <!-- Stage 3: Final Text -->
-      <div id="stage-message" class="stage">
-        <div class="final-message" id="typewriter-text"><span class="cursor"></span></div>
-      </div>
+      <div class="badge">SYSTEM COMPROMISED</div>
+      <div class="big">مبروك</div>
+      <div class="sub">العزيمة عليك</div>
     </section>
-
-    <!-- Hardware Connection Animation (Bottom Center) -->
-    <div class="hardware-link">
-      <div class="icon-mobile">
-        <div class="device-label">MOBILE_NODE</div>
-      </div>
-      
-      <div class="stream-wrapper">
-        <div class="stream-status" id="stream-status">INJECTING_PAYLOAD...</div>
-        <div class="stream-line">
-          <div class="stream-particles" id="stream-particles"></div>
-        </div>
-      </div>
-
-      <div class="icon-mac">
-        <div class="mac-screen"><div class="mac-logo"></div></div>
-        <div class="mac-base"></div>
-        <div class="device-label">MACBOOK_QASSEM</div>
-      </div>
-    </div>
   </main>
 
   <div class="panel right">
-    <div class="title">DATA STREAM</div>
-    <div class="log">
-      0x7f1a3b2c : mov rax,[rbx+10h]<br>
-      0x7f1a3b30 : xor rcx,rcx<br>
-      0x7f1a3b34 : add rax,1<br>
-      0x7f1a3b38 : cmp rax,rbx<br>
-      0x7f1a3b3c : jne 0x7f1a3b2c<br>
-      0x7f1a3b40 : push rax<br>
-      0x7f1a3b44 : call link_device()<br>
-      <span class="ok">0x7f1a3b48 : STATUS_OK</span>
+    <div class="title">DATA_EXTRACTION // LIVE</div>
+    <div class="log" id="extractionLog">
+      <div>> Initiating mass download...</div>
     </div>
   </div>
 
   <div class="bottom">
     <div class="panel">
-      <div class="title">NETWORK DEVICES</div>
-      <div class="device"><span>📱 Mobile Node</span><span class="connected">LINKED</span></div>
-      <div class="device"><span>💻 macbook_qassem</span><span class="connected">HOST</span></div>
+      <div class="title">CONNECTED NODES</div>
+      <div class="device"><span>📱 Primary Mobile</span><span class="connected">SYNCED</span></div>
+      <div class="device"><span>💬 WhatsApp DB</span><span class="connected">DECRYPTING</span></div>
+      <div class="device"><span>📸 Gallery Access</span><span class="connected">OPEN</span></div>
     </div>
+    
     <div class="panel">
-      <div class="title">ENCRYPTION STATUS</div>
-      <div class="log">AES-256-GCM <span class="ok">ACTIVE</span></div>
-      <div class="log dim">Latency: 12ms<br>Packet loss: 0.00%</div>
+      <div class="title">MAIN TRANSFER</div>
+      <div class="log" id="mainTransfer">Downloading Private_Data.zip... <span class="ok">0%</span></div>
+      <div class="bar"><span></span></div>
+      <div class="log dim">Speed: 14.2 MB/s<br>ETA: 00:00:45</div>
     </div>
-    <div class="panel radar">
-      <div class="radar-ring"></div>
+
+    <div class="panel">
+      <div class="title">FRONT CAMERA FEED</div>
+      <div class="camera-feed">
+        <div class="rec"><div class="rec-dot"></div> REC</div>
+        [ENCRYPTED VIDEO STREAM]
+      </div>
     </div>
   </div>
 </div>
 <div class="scanlines"></div><div class="vignette"></div>
 
 <script>
-// Matrix Background Logic
+// تأثير الماتريكس الخلفي
 const c=document.getElementById('matrix'),x=c.getContext('2d');
 let w,h,cols,drops;
-function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/20);drops=Array(cols).fill(1)}
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/16);drops=Array(cols).fill(1)}
 resize(); addEventListener('resize',resize);
 const chars='01アイウエオカキクケコZXCVBNM#$%<>[]{}+/\\\\';
 function draw(){
-  x.fillStyle='rgba(5, 10, 6, 0.1)';x.fillRect(0,0,w,h);
-  x.font='15px monospace';
+  x.fillStyle='rgba(0,0,0,.08)';x.fillRect(0,0,w,h);
+  x.font='14px monospace';
   for(let i=0;i<drops.length;i++){
     const ch=chars[Math.floor(Math.random()*chars.length)];
-    x.fillStyle=Math.random()>.90?'#ffffff':'#158532';
-    x.fillText(ch,i*20,drops[i]*20);
-    if(drops[i]*20>h && Math.random()>.975)drops[i]=0;
+    x.fillStyle=Math.random()>.88?'#b6ffca':'#16b943';
+    x.fillText(ch,i*16,drops[i]*16);
+    if(drops[i]*16>h && Math.random()>.975)drops[i]=0;
     drops[i]++;
   }
 }
-setInterval(draw,50);
+setInterval(draw,40);
 
-// Sequence Logic
-document.addEventListener("DOMContentLoaded", () => {
-    let progress = 0;
-    const progressBar = document.getElementById('progress-bar');
-    const percentageText = document.getElementById('percentage');
-    
-    const stageLoader = document.getElementById('stage-loader');
-    const stageCheck = document.getElementById('stage-check');
-    const stageMessage = document.getElementById('stage-message');
-    const typewriterText = document.getElementById('typewriter-text');
-    const sysLog = document.getElementById('sys-log');
-    
-    const streamStatus = document.getElementById('stream-status');
-    const streamParticles = document.getElementById('stream-particles');
+// توليد IP وهمي
+document.getElementById('fakeIP').innerText = Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255) + '.1' + Math.floor(Math.random()*9) + '.7';
 
-    // 1. Fast Loading (0 to 100)
-    let loadInterval = setInterval(() => {
-        progress += Math.floor(Math.random() * 8) + 2; 
-        
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadInterval);
-            
-            progressBar.style.width = '100%';
-            percentageText.innerText = '100%';
-            
-            // Move to Checkmark
-            setTimeout(showCheckmark, 400);
-        } else {
-            progressBar.style.width = progress + '%';
-            percentageText.innerText = progress + '%';
-        }
-    }, 40);
+// محاكاة استخراج البيانات
+const extractLog = document.getElementById('extractionLog');
+const fakeFiles = [
+  'Extracting /WhatsApp/Databases/msgstore.db...',
+  'Bypassing Snapchat Vault...',
+  'Downloading /DCIM/Camera/IMG_2026.jpg...',
+  'Extracting Telegram/Documents/Secret.pdf...',
+  'Copying Contacts/phonebook.vcf...',
+  'Reading Messenger chat logs...',
+  'Extracting Saved Passwords...'
+];
 
-    // 2. Show Checkmark & Secure hardware stream
-    function showCheckmark() {
-        stageLoader.classList.remove('active');
-        stageCheck.classList.add('active');
-        sysLog.innerHTML += '<div>> <span class="ok">Authentication Success ✓</span></div>';
-        
-        // Update the Hardware Animation status
-        streamStatus.innerText = 'LINK_SECURED';
-        streamStatus.style.color = '#fff';
-        streamStatus.style.animation = 'none';
-        streamStatus.style.textShadow = '0 0 10px #4aff79';
-        streamParticles.style.animationDuration = '0.1s'; // Speed up data flow when connected
-        
-        setTimeout(showFinalMessage, 2000);
-    }
+let fileIdx = 0;
+function simulateExtraction() {
+  if(fileIdx < fakeFiles.length) {
+    const div = document.createElement('div');
+    div.innerHTML = `> ${fakeFiles[fileIdx]} <span class="ok">DONE</span>`;
+    extractLog.appendChild(div);
+    extractLog.scrollTop = extractLog.scrollHeight;
+    fileIdx++;
+    setTimeout(simulateExtraction, 800 + Math.random() * 1200);
+  } else {
+    const finalDiv = document.createElement('div');
+    finalDiv.innerHTML = `<br><span class="ok">ALL DATA SECURED.</span>`;
+    extractLog.appendChild(finalDiv);
+  }
+}
+setTimeout(simulateExtraction, 1500);
 
-    // 3. Typewriter Effect
-    function showFinalMessage() {
-        stageCheck.classList.remove('active');
-        stageMessage.classList.add('active');
-        sysLog.innerHTML += '<div>> Linking devices...</div>';
-
-        const textPart1 = "your mobile is now connected to ";
-        const textPart2 = "macbook_qassem";
-        let i = 0;
-        let isTypingPart2 = false;
-        
-        typewriterText.innerHTML = '<span class="cursor"></span>';
-
-        let typeInterval = setInterval(() => {
-            typewriterText.innerHTML = typewriterText.innerHTML.replace('<span class="cursor"></span>', '');
-
-            if (!isTypingPart2) {
-                typewriterText.innerHTML += textPart1.charAt(i);
-                i++;
-                if (i >= textPart1.length) {
-                    isTypingPart2 = true;
-                    i = 0;
-                    typewriterText.innerHTML += '<br><span class="highlight"></span>';
-                }
-            } else {
-                const highlightSpan = typewriterText.querySelector('.highlight');
-                highlightSpan.innerHTML += textPart2.charAt(i);
-                i++;
-                if (i >= textPart2.length) {
-                    clearInterval(typeInterval);
-                    sysLog.innerHTML += '<div>> <span class="ok">Connection Established.</span></div>';
-                }
-            }
-            typewriterText.innerHTML += '<span class="cursor"></span>';
-        }, 60);
-    }
-});
+// عداد وهمي للتحميل
+let percent = 0;
+const transferText = document.getElementById('mainTransfer');
+const interval = setInterval(() => {
+  percent += Math.floor(Math.random() * 5);
+  if(percent >= 100) {
+    percent = 100;
+    clearInterval(interval);
+    transferText.innerHTML = `Private_Data.zip Downloaded <span class="ok">100%</span>`;
+  } else {
+    transferText.innerHTML = `Downloading Private_Data.zip... <span class="ok">${percent}%</span>`;
+  }
+}, 150);
 </script>
 </body>
 </html>
